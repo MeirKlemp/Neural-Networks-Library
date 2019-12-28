@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace NeuralNetworks
 {
@@ -177,6 +175,8 @@ namespace NeuralNetworks
         public Matrix(Matrix matrix) : this(matrix.values) { }
         #endregion
         #region Methods
+        public float[,] ToArray() => new Matrix(this).values;
+
         public void Map(Func<float, float> func)
         {
             for (int row = 0; row < Rows; row++)
