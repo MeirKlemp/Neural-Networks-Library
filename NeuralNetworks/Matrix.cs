@@ -7,7 +7,7 @@ namespace NeuralNetworks
     public class Matrix : ICloneable
     {
         #region Operators
-        public static Matrix operator +(Matrix matrix, double value)
+        public static Matrix operator +(Matrix matrix, float value)
         {
             matrix = new Matrix(matrix);
             for (int row = 0; row < matrix.Rows; row++)
@@ -21,7 +21,7 @@ namespace NeuralNetworks
             return matrix;
         }
 
-        public static Matrix operator -(Matrix matrix, double value) => matrix +- value;
+        public static Matrix operator -(Matrix matrix, float value) => matrix +- value;
 
         public static Matrix operator +(Matrix a, Matrix b)
         {
@@ -58,7 +58,7 @@ namespace NeuralNetworks
             return matrix;
         }
 
-        public static Matrix operator *(Matrix matrix, double value)
+        public static Matrix operator *(Matrix matrix, float value)
         {
             matrix = new Matrix(matrix);
             for (int row = 0; row < matrix.Rows; row++)
@@ -92,6 +92,15 @@ namespace NeuralNetworks
         }
         #endregion
         #region Static Methods
+        public static Matrix GetRandomMatrix(int row, int col, int a = -1, int b = 1)
+        {
+            var matrix = new Matrix(row, col);
+            var random = new Random();
+            // Random value is in range [a, b]
+            matrix.Map((x) => (float)(random.NextDouble() * (b - a) + a));
+            return matrix;
+        }
+
         public static Matrix MatMult(Matrix a, Matrix b)
         {
             if (a.Columns != b.Rows)
@@ -129,7 +138,7 @@ namespace NeuralNetworks
             return mat;
         }
 
-        public static Matrix Map(Matrix matrix, Func<double, double> func)
+        public static Matrix Map(Matrix matrix, Func<float, float> func)
         {
             matrix = new Matrix(matrix);
             matrix.Map(func);
@@ -139,11 +148,11 @@ namespace NeuralNetworks
         public static bool EqualSize(Matrix a, Matrix b) => a.Rows == b.Rows && a.Columns == b.Columns;
         #endregion
         #region Fields
-        public double this[int row, int col] { get => values[row, col]; set => values[row, col] = value; }
+        public float this[int row, int col] { get => values[row, col]; set => values[row, col] = value; }
         public int Rows { get; private set; }
         public int Columns { get; private set; }
 
-        private double[,] values;
+        private float[,] values;
         #endregion
         #region Ctors
         public Matrix(int rows, int columns)
@@ -151,10 +160,10 @@ namespace NeuralNetworks
             Rows = rows;
             Columns = columns;
 
-            values = new double[Rows, Columns];
+            values = new float[Rows, Columns];
         }
 
-        public Matrix(double[,] values) : this(values.GetLength(0), values.GetLength(1))
+        public Matrix(float[,] values) : this(values.GetLength(0), values.GetLength(1))
         {
             for (int row = 0; row < Rows; row++)
             {
@@ -168,7 +177,7 @@ namespace NeuralNetworks
         public Matrix(Matrix matrix) : this(matrix.values) { }
         #endregion
         #region Methods
-        public void Map(Func<double, double> func)
+        public void Map(Func<float, float> func)
         {
             for (int row = 0; row < Rows; row++)
             {
