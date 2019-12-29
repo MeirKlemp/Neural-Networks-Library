@@ -5,7 +5,7 @@ namespace NeuralNetworks
     public class Matrix : ICloneable
     {
         #region Operators
-        public static Matrix operator +(Matrix matrix, float value)
+        public static Matrix operator +(Matrix matrix, double value)
         {
             matrix = new Matrix(matrix);
             for (int row = 0; row < matrix.Rows; row++)
@@ -19,7 +19,7 @@ namespace NeuralNetworks
             return matrix;
         }
 
-        public static Matrix operator -(Matrix matrix, float value) => matrix +- value;
+        public static Matrix operator -(Matrix matrix, double value) => matrix +- value;
 
         public static Matrix operator +(Matrix a, Matrix b)
         {
@@ -56,7 +56,7 @@ namespace NeuralNetworks
             return matrix;
         }
 
-        public static Matrix operator *(Matrix matrix, float value)
+        public static Matrix operator *(Matrix matrix, double value)
         {
             matrix = new Matrix(matrix);
             for (int row = 0; row < matrix.Rows; row++)
@@ -90,12 +90,12 @@ namespace NeuralNetworks
         }
         #endregion
         #region Static Methods
+        private static Random random = new Random();
         public static Matrix GetRandomMatrix(int row, int col, int a = -1, int b = 1)
         {
             var matrix = new Matrix(row, col);
-            var random = new Random();
             // Random value is in range [a, b]
-            matrix.Map((x) => (float)(random.NextDouble() * (b - a) + a));
+            matrix.Map((x) => random.NextDouble() * (b - a) + a);
             return matrix;
         }
 
@@ -136,7 +136,7 @@ namespace NeuralNetworks
             return mat;
         }
 
-        public static Matrix Map(Matrix matrix, Func<float, float> func)
+        public static Matrix Map(Matrix matrix, Func<double, double> func)
         {
             matrix = new Matrix(matrix);
             matrix.Map(func);
@@ -146,11 +146,11 @@ namespace NeuralNetworks
         public static bool EqualSize(Matrix a, Matrix b) => a.Rows == b.Rows && a.Columns == b.Columns;
         #endregion
         #region Fields
-        public float this[int row, int col] { get => values[row, col]; set => values[row, col] = value; }
+        public double this[int row, int col] { get => values[row, col]; set => values[row, col] = value; }
         public int Rows { get; private set; }
         public int Columns { get; private set; }
 
-        private float[,] values;
+        private double[,] values;
         #endregion
         #region Ctors
         public Matrix(int rows, int columns)
@@ -158,10 +158,10 @@ namespace NeuralNetworks
             Rows = rows;
             Columns = columns;
 
-            values = new float[Rows, Columns];
+            values = new double[Rows, Columns];
         }
 
-        public Matrix(float[,] values) : this(values.GetLength(0), values.GetLength(1))
+        public Matrix(double[,] values) : this(values.GetLength(0), values.GetLength(1))
         {
             for (int row = 0; row < Rows; row++)
             {
@@ -175,9 +175,9 @@ namespace NeuralNetworks
         public Matrix(Matrix matrix) : this(matrix.values) { }
         #endregion
         #region Methods
-        public float[,] ToArray() => new Matrix(this).values;
+        public double[,] ToArray() => new Matrix(this).values;
 
-        public void Map(Func<float, float> func)
+        public void Map(Func<double, double> func)
         {
             for (int row = 0; row < Rows; row++)
             {
@@ -189,6 +189,27 @@ namespace NeuralNetworks
         }
 
         public object Clone() => new Matrix(this);
+
+        public override string ToString()
+        {
+            var str = "";
+
+            for (int row = 0; row < Rows; row++)
+            {
+                for (int col = 0; col < Columns; col++)
+                {
+                    str += values[row, col];
+
+                    if (col < Columns - 1)
+                    {
+                        str += ", ";
+                    }
+                }
+                str += "\n ";
+            }
+            
+            return str;
+        }
         #endregion
     }
 }

@@ -19,19 +19,19 @@ namespace NeuralNetworks
         /// <summary>
         /// Activation function of this layer in the neural networks.
         /// </summary>
-        public Func<float, float> ActivationFunction { get; private set; }
+        public Func<double, double> ActivationFunction { get; private set; }
         /// <summary>
         /// Derivation function of the activation function of this layer, for learning.
         /// </summary>
-        public Func<float, float> DerivationFunction { get; private set; }
+        public Func<double, double> DerivationFunction { get; private set; }
         /// <summary>
         /// The weights connected between this layer and the next layer.
         /// </summary>
-        public Matrix Weights { get; private set; }
+        public Matrix Weights { get; set; }
         /// <summary>
         /// The bias of the layer.
         /// </summary>
-        public Matrix Bias { get; private set; }
+        public Matrix Bias { get; set; }
         #endregion
         #region Ctors
         /// <summary>
@@ -41,7 +41,7 @@ namespace NeuralNetworks
         /// <param name="nextSize">The size of the next layer.</param>
         /// <param name="activation">Activation function of this layer</param>
         /// <param name="derivation">Derivation function of the activation function</param>
-        public Layer(int size, int nextSize, Func<float, float> activation, Func<float, float> derivation)
+        public Layer(int size, int nextSize, Func<double, double> activation, Func<double, double> derivation)
         {
             Size = size;
             ActivationFunction = activation;
@@ -50,18 +50,9 @@ namespace NeuralNetworks
 
             if (NextSize > 0)
             {
-                Weights = Matrix.GetRandomMatrix(Size, NextSize);
+                Weights = Matrix.GetRandomMatrix(NextSize, Size);
                 Bias = Matrix.GetRandomMatrix(NextSize, 1);
             }
-        }
-
-        /// <summary>
-        /// Ctor for the output layer.
-        /// </summary>
-        /// <param name="size">The size of the layer.</param>
-        public Layer(int size)
-        {
-            Size = size;
         }
 
         /// <summary>
@@ -71,8 +62,8 @@ namespace NeuralNetworks
         public Layer(Layer clone)
         {
             Size = clone.Size;
-            ActivationFunction = (Func<float, float>)clone.ActivationFunction.Clone();
-            DerivationFunction = (Func<float, float>)clone.DerivationFunction.Clone();
+            ActivationFunction = (Func<double, double>)clone.ActivationFunction.Clone();
+            DerivationFunction = (Func<double, double>)clone.DerivationFunction.Clone();
             NextSize = clone.NextSize;
 
             if (NextSize > 0)
