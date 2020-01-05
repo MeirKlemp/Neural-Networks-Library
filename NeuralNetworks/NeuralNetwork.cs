@@ -9,13 +9,19 @@ namespace NeuralNetworks
         public double LearningRate { get; set; }
         private Layer[] Layers { get; set; }
 
-        public NeuralNetwork(params Layer[] layers)
+        public NeuralNetwork(Layer layer, params Layer[] layers)
         {
-             Layers = new Layer[layers.Length];
+             Layers = new Layer[layers.Length + 1];
 
-            for (int i = 0; i < layers.Length; ++i)
+            Layers[0] = new Layer(layer);
+            for (int i = 1; i < Layers.Length; ++i)
             {
-                Layers[i] = (Layer)layers[i].Clone();
+                Layers[i] = new Layer(layers[i - 1]);
+
+                if (Layers[i].Size != Layers[i - 1].NextSize)
+                {
+                    throw new Exception("Layer's NextSize must be equals to the next layer's Size.");
+                }
             }
 
             LearningRate = .1;
