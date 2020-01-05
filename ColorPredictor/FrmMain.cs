@@ -16,6 +16,7 @@ namespace ColorPredictor
         public NeuralNetwork Brain { get; set; }
         public Dictionary<Color, int> Data { get; set; }
 
+        private int correct;
         private double computerColor;
         private Color backColor;
         private Random random;
@@ -80,6 +81,12 @@ namespace ColorPredictor
                     var sizeWhite = gfx.MeasureString("White", new Font(Font.FontFamily, comCircleSize));
                     gfx.DrawString("Black", new Font(Font.FontFamily, comCircleSize), Brushes.Black, new PointF(pbCanvas.Width / 4 - sizeBlack.Width / 2, pbCanvas.Height / 2 - sizeBlack.Height / 2));
                     gfx.DrawString("White", new Font(Font.FontFamily, comCircleSize), Brushes.White, new PointF(pbCanvas.Width * .75f - sizeWhite.Width / 2, pbCanvas.Height / 2 - sizeWhite.Height / 2));
+
+                    if (Data.Count > 0)
+                    {
+                        var correctness = string.Format("Correct choice: {0:0.00}%", correct / (float)Data.Count * 100);
+                        gfx.DrawString(correctness, new Font(Font.FontFamily, comCircleSize / 4), new SolidBrush(comChosen), new PointF());
+                    }
                 }
 
                 return img;
@@ -108,6 +115,11 @@ namespace ColorPredictor
         private void pbCanvas_MouseClick(object sender, MouseEventArgs e)
         {
             var chosen = e.X > pbCanvas.Width / 2 ? 1 : 0;
+
+            if (computerColor < .5f && chosen < .5f || computerColor > .5f && chosen > .5f)
+            {
+                correct++;
+            }
 
             if (!Data.ContainsKey(backColor))
             {
