@@ -5,9 +5,9 @@ VisualStudioVersion = 16.0.29519.87
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NeuralNetworks", "NeuralNetworks\NeuralNetworks.csproj", "{C75541BF-C88C-4D43-A778-3AB9AB1D835C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XorLearner", "XorLearner\XorLearner.csproj", "{F7E29EA0-ED77-4585-B421-4C9492547EAD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XorLearner", "Examples\XorLearner\XorLearner.csproj", "{F7E29EA0-ED77-4585-B421-4C9492547EAD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ColorPredictor", "ColorPredictor\ColorPredictor.csproj", "{72735D78-9E87-4163-9396-6B3325F39B4D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ColorPredictor", "Examples\ColorPredictor\ColorPredictor.csproj", "{72735D78-9E87-4163-9396-6B3325F39B4D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
