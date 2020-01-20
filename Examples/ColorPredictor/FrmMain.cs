@@ -58,8 +58,8 @@ namespace ColorPredictor
                 using (var gfx = Graphics.FromImage(img))
                 {
                     Color comChosen;
-                    var comCircleSize = Math.Min(pbCanvas.Width, pbCanvas.Height) / 8;
-                    var comCircle = new Rectangle(pbCanvas.Width / 4 - comCircleSize / 2, pbCanvas.Height * 2 / 3 - comCircleSize / 2, comCircleSize, comCircleSize);
+                    var comCircleSize = (float)Math.Min(pbCanvas.Width, pbCanvas.Height) / 8;
+                    var comCircle = new RectangleF(pbCanvas.Width / 4 - comCircleSize / 2, pbCanvas.Height * 2 / 3 - comCircleSize / 2, comCircleSize, comCircleSize);
 
                     if (computerColor > .5)
                     {
@@ -77,10 +77,19 @@ namespace ColorPredictor
                     gfx.DrawLine(new Pen(Color.Black, 3), pbCanvas.Width / 2, (int)(pbCanvas.Height * computerColor), pbCanvas.Width / 2, pbCanvas.Height);
                     gfx.FillEllipse(new SolidBrush(comChosen), comCircle);
 
-                    var sizeBlack = gfx.MeasureString("Black", new Font(Font.FontFamily, comCircleSize));
-                    var sizeWhite = gfx.MeasureString("White", new Font(Font.FontFamily, comCircleSize));
-                    gfx.DrawString("Black", new Font(Font.FontFamily, comCircleSize), Brushes.Black, new PointF(pbCanvas.Width / 4 - sizeBlack.Width / 2, pbCanvas.Height / 2 - sizeBlack.Height / 2));
-                    gfx.DrawString("White", new Font(Font.FontFamily, comCircleSize), Brushes.White, new PointF(pbCanvas.Width * .75f - sizeWhite.Width / 2, pbCanvas.Height / 2 - sizeWhite.Height / 2));
+                    /*using (var font = new Font(Font.FontFamily, comCircle.Width / 5))
+                    {
+                        var comChoiceSize = gfx.MeasureString("Computer's Choice", font);
+                        gfx.DrawString("Computer's Choice", font, new SolidBrush(Color.FromArgb(255 - comChosen.R, 255 - comChosen.G, 255 - comChosen.B)), comCircle);
+                    }*/
+
+                    using (var font = new Font(Font.FontFamily, comCircleSize))
+                    {
+                        var sizeBlack = gfx.MeasureString("Black", font);
+                        var sizeWhite = gfx.MeasureString("White", font);
+                        gfx.DrawString("Black", font, Brushes.Black, new PointF(pbCanvas.Width / 4 - sizeBlack.Width / 2, pbCanvas.Height / 2 - sizeBlack.Height / 2));
+                        gfx.DrawString("White", font, Brushes.White, new PointF(pbCanvas.Width * .75f - sizeWhite.Width / 2, pbCanvas.Height / 2 - sizeWhite.Height / 2));
+                    }
 
                     if (Data.Count > 0)
                     {
@@ -110,6 +119,12 @@ namespace ColorPredictor
                 var value = Data[color];
                 Brain.Train(new double[] { color.R / 255.0, color.G / 255.0, color.B / 255.0 }, new double[] { value });
             }
+
+            /*if (++count == 10)
+            {
+                Clipboard.SetText(Brain.ToString());
+                MessageBox.Show("Test");
+            }*/
         }
 
         private void pbCanvas_MouseClick(object sender, MouseEventArgs e)

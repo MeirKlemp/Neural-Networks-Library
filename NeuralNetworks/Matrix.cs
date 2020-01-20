@@ -2,6 +2,9 @@
 
 namespace NeuralNetworks
 {
+    /// <summary>
+    /// A class to represent the vector space Matrix.
+    /// </summary>
     public class Matrix : ICloneable
     {
         #region Operators
